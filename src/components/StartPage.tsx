@@ -4,7 +4,7 @@ function StartPage() {
   return (
     <div className="start-page">
       <h1>Tere tulemast viktoriinirakendusse!</h1>
-      <Link to="/question/1">Alusta viktoriini</Link>
+      <Link to="/kysimus/1">Alusta viktoriini</Link>
     </div>
   );
 }
