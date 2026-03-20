@@ -1,5 +1,14 @@
-const questions = [
+
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  answer: string;
+}
+
+const questions: Question[] = [
   {
+    id: 1,
     question: "Mis on Eesti pealinn?",
     options: [
       "Tallinn",
@@ -9,6 +18,7 @@ const questions = [
     answer: "Tallinn"
   },
   {
+    id: 2,
     question: "Mis on Eesti suuruselt teine linn?",
     options: [
       "Pärnu",
@@ -19,6 +29,7 @@ const questions = [
     answer: "Tartu"
   },
   {
+    id: 3,
     question: "Mis on Eesti pikim jõgi?",
     options: [
       "Emajõgi",
@@ -29,6 +40,7 @@ const questions = [
     answer: "Võhandu jõgi"
   },
   {
+    id: 4,
     question: "Mis on Eesti suurim saar?",
     options: [
       "Muhu",
