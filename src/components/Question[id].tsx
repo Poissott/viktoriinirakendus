@@ -32,6 +32,16 @@ const saveAnswers = () => {
 
 export const answers: AnsweredQuestion[] = loadAnswers();
 
+export const clearAnswers = () => {
+  answers.length = 0;
+
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  localStorage.removeItem(ANSWERS_STORAGE_KEY);
+};
+
 function Question() {
   const { id } = useParams<{ id: string }>();
   const questionObj = questions.find(q => q.id === parseInt(id!));
@@ -73,41 +83,62 @@ function Question() {
     }  
   }
 
+  const baseButtonClass = "border border-2 font-bold py-2 px-4 transition duration-100";
+
   return (
-    <div className="question">
-      <h2>{questionObj?.question}</h2>
-      {questionObj && questionObj.options.map((option: string, index: number) => (
-        <p key={index} 
-        onClick={() => handleOptionClick(option)} 
-        style={{ 
-          cursor: "pointer", 
-          backgroundColor: 
-            isAnswered ? 
-              option === questionObj.answer ? "green" : 
-              option === selectedOption ? "red" : "transparent" 
-            : option === selectedOption ? "lightblue" : "transparent",
-          pointerEvents: isAnswered ? "none" : "auto"
-        }}>
-          {option}
-        </p>
-      ))}
-      <p
-      onClick={handleOptionSubmitClick}
-      style={{
-        cursor: "pointer",
-        backgroundColor: selectedOption ? "blue" : "gray",
-      }}>
-        Kontrolli vastust
-      </p>
-      {isAnswered && (
-        <Link to={{ pathname: parseInt(id!) + 1 == questions.length + 1 ? `/tulemused` : `/kysimus/${parseInt(id!) + 1}` }}
-        style={{
-          cursor: "pointer",
-        }}
+    <div className="min-h-screen flex items-center justify-center">
+    <div className="bg-white flex flex-col items-start justify-center p-[10px] text-left gap-4 min-w-[600px] p-[20px]">
+      <h2 className="text-3xl font-bold mb-1">{questionObj?.question}</h2>
+      <div className="flex flex-col gap-3 w-full">
+        {questionObj && questionObj.options.map((option: string, index: number) => (
+        <button
+        key={index}
+        onClick={() => handleOptionClick(option)}
+        className={`${baseButtonClass} w-full text-left ${
+          isAnswered
+            ? option === questionObj.answer
+              ? "bg-[#4DC14D] text-black border-black"
+              : option === selectedOption
+                ? "bg-[#DC1919] text-white border-black"
+                : "bg-white text-black border-black"
+            : option === selectedOption
+              ? "bg-black text-white border-black"
+              : "bg-white text-black border-black hover:bg-black hover:text-white"
+        }`}
+        disabled={isAnswered}
         >
-          Järgmine küsimus
-        </Link>
-      )}
+          {option}
+        </button>
+      ))}
+      </div>
+      <div className="w-full flex items-center justify-between">
+        <button
+        onClick={handleOptionSubmitClick}
+        disabled={!selectedOption || isAnswered}
+        className={`${baseButtonClass} ${
+          selectedOption && !isAnswered
+            ? "bg-black text-white border-black hover:bg-white hover:text-black cursor-pointer"
+            : "bg-[#DDDDDD] text-[#565656] border-[#DDDDDD] cursor-not-allowed"
+        }`}
+        >
+          Kontrolli vastust
+        </button>
+        {isAnswered && parseInt(id!) + 1 == questions.length + 1 ? (
+          <Link to={`/tulemused`}
+          className={`${baseButtonClass} bg-black text-white border-black hover:bg-white hover:text-black`}
+          >
+            Vaata tulemusi
+          </Link>
+        ) : isAnswered ? (
+          <Link to={`/kysimus/${parseInt(id!) + 1}`}
+          className={`${baseButtonClass} bg-black text-white border-black hover:bg-white hover:text-black`}
+          >
+            Järgmine küsimus
+          </Link>
+        ) : null}
+      </div>
+    </div>
+    
     </div>
   );
 }

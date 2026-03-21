@@ -7,6 +7,13 @@ import ResultTable from "./components/ResultTable"
 function App() {
   return (
     <BrowserRouter>
+      <div className="bg-white fixed top-6.5 left-6.5 w-27 h-10">
+        <img
+        src="/src/assets/ES_Logo.png"
+        alt="statlogo"
+        className="fixed top-6.5 left-6.5 w-27"
+      />
+      </div>
       <Routes>
         <Route path="/" element={<StartPage />} />
         <Route path="/kysimus/:id" element={<Question />} />
