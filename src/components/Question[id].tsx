@@ -2,7 +2,35 @@ import { Link, useParams } from "react-router-dom";
 import questions from "../data/questions";
 import React, { useEffect } from "react";
 
-const answers: string[] = [];
+type AnsweredQuestion = {
+  questionId: number;
+  selectedOption: string;
+};
+
+const ANSWERS_STORAGE_KEY = "quizAnswers";
+
+const loadAnswers = (): AnsweredQuestion[] => {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const raw = localStorage.getItem(ANSWERS_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as AnsweredQuestion[]) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveAnswers = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  localStorage.setItem(ANSWERS_STORAGE_KEY, JSON.stringify(answers));
+};
+
+export const answers: AnsweredQuestion[] = loadAnswers();
 
 function Question() {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +39,15 @@ function Question() {
   const [isAnswered, setIsAnswered] = React.useState(false);
   
   useEffect(() => {
+    const currentQuestionId = parseInt(id!);
+    const existingAnswer = answers.find(a => a.questionId === currentQuestionId);
+
+    if (existingAnswer) {
+      setSelectedOption(existingAnswer.selectedOption);
+      setIsAnswered(true);
+      return;
+    }
+
     setSelectedOption(null);
     setIsAnswered(false);
   }, [id]);
@@ -22,7 +59,16 @@ function Question() {
 
   const handleOptionSubmitClick = () => {
     if (selectedOption) {
-      answers.push(selectedOption);
+      const currentQuestionId = parseInt(id!);
+      const existingAnswer = answers.find(a => a.questionId === currentQuestionId);
+
+      if (existingAnswer) {
+        existingAnswer.selectedOption = selectedOption;
+      } else {
+        answers.push({ questionId: currentQuestionId, selectedOption });
+      }
+
+      saveAnswers();
       setIsAnswered(true);
     }  
   }
