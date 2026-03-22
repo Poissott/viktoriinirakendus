@@ -1,6 +1,6 @@
 # Viktoriinirakendus
 
-Lihtne Reactil põhinev viktoriinirakendus, kus kasutaja saab vastata küsimustele ning näeb lõpus oma tulemust.
+Reactil põhinev viktoriinirakendus, kus kasutaja saab vastata küsimustele ning näeb lõpus oma tulemust.
 
 ## Lingid
 
