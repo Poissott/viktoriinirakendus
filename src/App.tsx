@@ -3,7 +3,7 @@ import Question from "./components/Question[id]"
 import StartPage from "./components/StartPage"
 import ResultTable from "./components/ResultTable"
 
-
+// Rakenduse struktuur tehtud React Routeri põhjal
 function App() {
   return (
     <BrowserRouter>

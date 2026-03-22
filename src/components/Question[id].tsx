@@ -2,11 +2,14 @@ import { Link, useParams } from "react-router-dom";
 import questions from "../data/questions";
 import React, { useEffect } from "react";
 
+// Anmestruktuur, mis hoiustab vastatud küsimuse ID-d ja valitud vastust
 type AnsweredQuestion = {
   questionId: number;
   selectedOption: string;
 };
 
+
+// Vastuste haldamine vahemälus, et need säiliksid ka lehe värskendamisel
 const ANSWERS_STORAGE_KEY = "quizAnswers";
 
 const loadAnswers = (): AnsweredQuestion[] => {
@@ -32,6 +35,7 @@ const saveAnswers = () => {
 
 export const answers: AnsweredQuestion[] = loadAnswers();
 
+// Funktsioon, mis kustutab kõik vahemälu info - kasutatakse pealehel nupule "Alusta viktoriiniga" vajutades
 export const clearAnswers = () => {
   answers.length = 0;
 
@@ -43,11 +47,13 @@ export const clearAnswers = () => {
 };
 
 function Question() {
+  // State'ide hoiustamine
   const { id } = useParams<{ id: string }>();
   const questionObj = questions.find(q => q.id === parseInt(id!));
   const [selectedOption, setSelectedOption] = React.useState<string | null>(null);
   const [isAnswered, setIsAnswered] = React.useState(false);
   
+  // Kui küsimusele on juba vastatud/vastamata, siis seame vastavad state'id
   useEffect(() => {
     const currentQuestionId = parseInt(id!);
     const existingAnswer = answers.find(a => a.questionId === currentQuestionId);
@@ -62,10 +68,12 @@ function Question() {
     setIsAnswered(false);
   }, [id]);
 
+  // Valiku valimise funktsioon
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
   }
 
+  // Valiku kinnitamise funktsioon, mis salvestab vastuse ja keelab edasised muudatused selle küsimuse puhul
   const handleOptionSubmitClick = () => {
     if (selectedOption) {
       const currentQuestionId = parseInt(id!);
@@ -82,12 +90,15 @@ function Question() {
     }  
   }
 
+  // Nupu stiili baas
   const baseButtonClass = "border border-2 font-bold py-2 px-4 transition duration-100";
 
   return (
     <div className="min-h-screen flex items-center justify-center">
     <div className="bg-white flex flex-col items-start justify-center p-[10px] text-left gap-4 min-w-[600px] p-[20px]">
+      {/* Küsimuse tekst */}
       <h2 className="text-3xl font-bold mb-1">{questionObj?.question}</h2>
+      {/* Vastusevariandid */}
       <div className="flex flex-col gap-3 w-full">
         {questionObj && questionObj.options.map((option: string, index: number) => (
         <button
@@ -110,6 +121,7 @@ function Question() {
         </button>
       ))}
       </div>
+      {/* Nupud: "Kontrolli vastust", "JVaata tulemusi" ja "Järgmine küsimus" */}
       <div className="w-full flex items-center justify-between">
         <button
         onClick={handleOptionSubmitClick}

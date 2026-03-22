@@ -2,12 +2,17 @@ import { answers } from "./Question[id]";
 import questions from "../data/questions";
 import { Link } from "react-router-dom";
 
+// Tulemuste leht - kuvab kasutajale skoori, sõnumi ja tulemuste tabeli
+
+// Nupu stiili baas
 const baseButtonClass = "transition duration-100 border border-2 font-bold py-2 px-4";
 
 function ResultTable() {
+    // Lõppskoori arvutamine
     const finalScore = questions.length > 0 ? answers.filter((a) => a.selectedOption === questions.find((q) => q.id === a.questionId)?.answer).length : 0;
     const hasAnswers = answers.length > 0;
 
+    // Sõnumi määramine skoori põhjal
     let resultsMessage = "Pole veel vastuseid.";
     if (hasAnswers && questions.length > 0) {
         if (finalScore === questions.length) {
@@ -22,8 +27,11 @@ function ResultTable() {
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="bg-white p-[20px] min-w-[900px] text-left gap-4 flex flex-col">
+                {/* Lõppskoor */}
                 <p className="text-2xl font-bold text-black">Skoor: {finalScore}/{questions.length} {finalScore / questions.length === 1 ? "🎉" : ""}</p>
+                {/* Isikupärastatud sõnum */}
                 <p className="font-normal text-[#565656]">{resultsMessage}</p>
+                {/* Tulemuste tabel */}
                 <table className="w-full border-collapse border border-[#DDDDDD] text-sm">
                     <thead className="bg-[#F8F8F8]">
                         <tr>
@@ -53,6 +61,7 @@ function ResultTable() {
                         })}
                     </tbody>
                 </table>
+                {/* Nupp, mis viib kasutaja tagasi avalehele */}
                 <Link to={`/`}
                     className={`${baseButtonClass} bg-black text-white border-black hover:bg-white hover:text-black w-max self-end`}
                 >

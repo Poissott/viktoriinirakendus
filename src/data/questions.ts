@@ -1,3 +1,4 @@
+// Küsimused viktoriini jaoks
 
 interface Question {
   id: number;
