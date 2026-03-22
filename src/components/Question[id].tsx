@@ -61,7 +61,6 @@ function Question() {
     setSelectedOption(null);
     setIsAnswered(false);
   }, [id]);
-  
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
@@ -138,7 +137,6 @@ function Question() {
         ) : null}
       </div>
     </div>
-    
     </div>
   );
 }

@@ -1,11 +1,29 @@
 import { answers } from "./Question[id]";
 import questions from "../data/questions";
+import { Link } from "react-router-dom";
+
+const baseButtonClass = "transition duration-100 border border-2 font-bold py-2 px-4";
 
 function ResultTable() {
+    const finalScore = questions.length > 0 ? answers.filter((a) => a.selectedOption === questions.find((q) => q.id === a.questionId)?.answer).length : 0;
+    const hasAnswers = answers.length > 0;
+
+    let resultsMessage = "Pole veel vastuseid.";
+    if (hasAnswers && questions.length > 0) {
+        if (finalScore === questions.length) {
+            resultsMessage = "Kõik vastused on õiged! Sa tunned Eestit läbi ja lõhki.";
+        } else if (finalScore / questions.length > 0.5) {
+            resultsMessage = "Sinu teadmised Eestist on head. Sa ei pruugi küll igat fakti teada, aga vähemalt sa üritasid.";
+        } else {
+            resultsMessage = "Sinu teadmistele Eestist on veel arenguruumi. Aga kõige olulisem on see, et sa üritasid.";
+        }
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <div className="bg-white p-[20px] min-w-[900px] text-left gap-4">
-                <h3 className="font-bold mb-4 text-lg text-black">Viktoriini tulemused</h3>
+            <div className="bg-white p-[20px] min-w-[900px] text-left gap-4 flex flex-col">
+                <p className="text-2xl font-bold text-black">Skoor: {finalScore}/{questions.length} {finalScore / questions.length === 1 ? "🎉" : ""}</p>
+                <p className="font-normal text-[#565656]">{resultsMessage}</p>
                 <table className="w-full border-collapse border border-[#DDDDDD] text-sm">
                     <thead className="bg-[#F8F8F8]">
                         <tr>
@@ -22,7 +40,7 @@ function ResultTable() {
                             return (
                                 <tr key={question.id} className={index % 2 === 0 ? "bg-[#FFFFFF]" : "bg-[#F8F8F8]"}>
                                     <td className="border border-[#DDDDDD] p-2 font-bold text-black">{question.question}</td>
-                                    <td className="border border-[#DDDDDD] p-2 text-[#565656]">{selectedAnswer ?? "Vastamata"}</td>
+                                    <td className="border border-[#DDDDDD] p-2 text-[#565656] font-normal">{selectedAnswer ?? "Vastamata"}</td>
                                     <td
                                         className={`border border-[#DDDDDD] p-2 font-bold ${
                                             selectedAnswer ? (isCorrect ? "text-[#4DC14D]" : "text-[#DC1919]") : "text-[#565656]"
@@ -35,6 +53,11 @@ function ResultTable() {
                         })}
                     </tbody>
                 </table>
+                <Link to={`/`}
+                    className={`${baseButtonClass} bg-black text-white border-black hover:bg-white hover:text-black w-max self-end`}
+                >
+                    Tagasi pealehele
+                </Link>
             </div>
         </div>
     );
