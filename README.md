@@ -23,7 +23,7 @@ Reactil põhinev viktoriinirakendus, kus kasutaja saab vastata küsimustele ning
 - Tailwind CSS
 - Playwright (E2E testid)
 
-## Arendus keskkonnas
+## Käivitamine 
 
 Eeldused:
 
