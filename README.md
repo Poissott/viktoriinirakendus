@@ -36,7 +36,7 @@ npm install
 npm run dev
 ```
 
-Rakendus avaneb vaikimisi localhosti aadressil.
+Rakendus avaneb vaikimisi localhosti aadressil (aga saab ka eelmainitud Verceli lingil).
 
 ## Testimine
 
