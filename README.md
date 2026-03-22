@@ -27,7 +27,6 @@ Reactil põhinev viktoriinirakendus, kus kasutaja saab vastata küsimustele ning
 
 Eeldused:
 
-- Node.js (soovitatavalt LTS)
 - npm
 
 Paigaldus ja käivitamine:
